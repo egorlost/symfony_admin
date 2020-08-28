@@ -1,0 +1,9 @@
+parameters:
+  locale: 'en'
+  locale_list: ['en', 'ru']
+  default_locale: '%locale%'
+  translator:
+    fallbacks: ['%locale%']
+  translations_path: '/admin/translations/index'
+  project_name: 'Symfony admin'
+  secret: '%env(APP_SECRET)%'

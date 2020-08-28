@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html class="no-js css-menubar" lang="en">
+<head>
+    {% block metatags %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+        <meta name="description" content="{{ project_name }} project">
+        <meta name="author" content="">
+        <meta name="msapplication-TileColor" content="#edcd1f">
+        <meta name="theme-color" content="#edcd1f">
+    {% endblock metatags %}
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/admin/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/admin/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/admin/img/favicon-16x16.png">
+    <link rel="mask-icon" href="/admin/img/safari-pinned-tab.svg" color="#edcd1f">
+
+    <link rel="stylesheet" href="{{ asset('assets/admin/libs/font-awesome/css/font-awesome.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/libs/Ionicons/css/ionicons.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/template-common-libs.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/styles.min.css') }}">
+
+</head>
+
+{% block body_top_tag %}
+<body class="animsition page-register layout-full page-dark">
+{% endblock body_top_tag %}
+
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+{% block content %}{% endblock content %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/admin/js/template-common-libs.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/template-init.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/app.js')|set_version }}"></script>
+{% endblock %}
+
+</body>
+</html>

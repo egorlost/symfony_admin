@@ -1,0 +1,10 @@
+controllers:
+    resource: ../../src/Controller/
+    type: annotation
+
+admin_part:
+    resource: ../../src/Controller/Admin/
+    type: annotation
+    prefix: /admin
+    options: { i18n: false }
+    locale: '%locale%'

@@ -1,0 +1,88 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    App\Entity\Repository\:
+        resource: '../src/Entity/Repository'
+        autowire: true
+        tags: ['doctrine.repository_service']
+
+    entity_listener:
+        class: App\EventListener\EntityListener
+        arguments:
+        - '@security.token_storage'
+        tags:
+            - { name: doctrine.event_listener, event: postUpdate }
+            - { name: doctrine.event_listener, event: postPersist }
+
+    security.authentication.success_handler:
+        class:  App\Handler\AuthenticationSuccessHandler
+        arguments:  ["@security.http_utils", {}]
+        tags:
+            - { name: 'monolog.logger', channel: 'security' }
+
+    security.authentication.failure_handler:
+        class:  App\Handler\AuthenticationFailureHandler
+        arguments:  ["@http_kernel", "@security.http_utils", {}, "@logger"]
+        tags:
+            - { name: 'monolog.logger', channel: 'security' }
+
+    authentication.handler.logout_success_handler:
+        class:  App\Handler\AuthenticationLogoutHandler
+        arguments: ["@security.http_utils"]
+        tags:
+            - { name: 'monolog.logger', channel: 'security' }
+
+    uploader.custom_file_system_storage:
+        class: App\Service\Uploader\CustomFileSystemStorage
+        public: true
+        arguments:
+            - "@vich_uploader.property_mapping_factory"
+
+    uploader.directory_name_date:
+        class: App\Service\Uploader\DirectoryNameDate
+        public: true
+
+    uploader.file_name_full_path:
+        class: App\Service\Uploader\FileNameFullPath
+        public: true
+        arguments:
+            - "@uploader.directory_name_date"
+
+    JMS\TranslationBundle\Controller\TranslateController:
+        public: true
+        arguments:
+            $configFactory: '@jms_translation.config_factory'
+            $loader: '@jms_translation.loader_manager'
+
+    JMS\TranslationBundle\Controller\ApiController:
+        public: true
+        arguments:
+            $configFactory: '@jms_translation.config_factory'
+            $updater: '@jms_translation.updater'
+
+    FOS\RestBundle\Serializer\Normalizer\FormErrorNormalizer:
+        public: true

@@ -1,0 +1,9 @@
+jms_translation:
+  configs:
+    app:
+      dirs: ["%kernel.root_dir%", "%kernel.project_dir%/src", "%kernel.project_dir%/templates"]
+      output_dir: "%kernel.project_dir%/translations"
+      ignored_domains: [routes, Admin]
+      excluded_names: ["*TestCase.php", "*Test.php"]
+      excluded_dirs: [cache, data, logs]
+      extractors: [jms_i18n_routing]

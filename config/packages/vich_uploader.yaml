@@ -1,0 +1,22 @@
+vich_uploader:
+    db_driver: orm
+    storage:   "@uploader.custom_file_system_storage"
+    mappings:
+
+        blog_image:
+            uri_prefix:         /uploads/blog_image
+            upload_destination: '%kernel.project_dir%/public/uploads/blog_image'
+            namer:              uploader.file_name_full_path
+            directory_namer:    uploader.directory_name_date
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
+
+        story_image:
+            uri_prefix:         /uploads/story_image
+            upload_destination: '%kernel.project_dir%/public/uploads/story_image'
+            namer:              uploader.file_name_full_path
+            directory_namer:    uploader.directory_name_date
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
